@@ -1,0 +1,406 @@
+﻿<UserControl
+    x:Class="Browser.TabContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Browser"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="1080"
+    RequestedTheme="Dark">
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/CustomizedControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <!--Tool Bar-->
+            <RowDefinition Height="50"/>
+            <!--Browser-->
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        Padding="10">
+
+                <!--Back Button-->
+                <Button x:Name="btn_Back"
+                        Style="{StaticResource Buttons_Style}"
+                        Margin="0,0,10,0"
+                        Click="btn_Back_Click">
+
+                    <Viewbox Style="{StaticResource Viewbox_Style}">
+                        <SymbolIcon Symbol="Back"/>
+                    </Viewbox>
+                    
+                </Button>
+
+                <!--Forward Button-->
+                <Button x:Name="btn_Forward"
+                        Style="{StaticResource Buttons_Style}"
+                        Click="btn_Forward_Click">
+
+                    <Viewbox Style="{StaticResource Viewbox_Style}">
+                        <SymbolIcon Symbol="Forward"/>
+                    </Viewbox>
+                    
+                </Button>
+                
+            </StackPanel>
+
+            <!--Home Button-->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <Button x:Name="btn_Home"
+                        Style="{StaticResource Buttons_Style2}"
+                        Click="btn_Home_Click">
+
+                    <Viewbox Style="{StaticResource Viewbox_Style}">
+                        <SymbolIcon Symbol="Home"/>
+                    </Viewbox>
+                    
+                </Button>
+
+                <Button x:Name="btn_Refresh"
+                        Style="{StaticResource Buttons_Style2}"
+                        Click="btn_Refresh_Click">
+
+                    <Viewbox Style="{StaticResource Viewbox_Style}">
+                        <SymbolIcon Symbol="Refresh"/>
+                    </Viewbox>
+                    
+                </Button>
+                
+            </StackPanel>
+
+            <!--Search Bar-->
+            <AutoSuggestBox x:Name="asb_searchUrlBox"
+                                Grid.Column="1"
+                                Margin="0,10"
+                                Padding="10,0,50,0"
+                                QueryIcon="Find" 
+                                QuerySubmitted="asb_searchUrlBox_QuerySubmitted"
+                                TextChanged="asb_searchUrlBox_TextChanged"
+                                SuggestionChosen="asb_searchUrlBox_SuggestionChosen"
+                                GotFocus="asb_searchUrlBox_GotFocus">
+            </AutoSuggestBox>
+
+
+            <!--Stop Button-->
+            <Button x:Name="btn_Stop"
+                    Grid.Column="2"
+                    Style="{StaticResource Buttons_Style2}"
+                    Visibility="Collapsed"
+                    Click="btn_Stop_Click">
+
+                <Viewbox Style="{StaticResource Viewbox_Style}">
+                    <SymbolIcon Symbol="Cancel"/>
+                </Viewbox>
+                
+            </Button>
+
+            <Grid Grid.Column="2"
+                  HorizontalAlignment="Right">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="img_Incognito"
+                       Grid.Column="0"
+                       Width="30"
+                       Height="30"
+                       Stretch="Fill"
+                       Margin="10"
+                       Visibility="Collapsed"
+                       VerticalAlignment="Stretch"
+                       HorizontalAlignment="Right"
+                       ToolTipService.ToolTip="You are in incognito mode"
+                       Source="MyAssets/inc.png"/>
+
+                <!--Bookmarks Button-->
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1">
+
+                    <Button x:Name="btn_Bookmarks"
+                            Margin="10,0"
+                            Background="{x:Null}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource Buttons_Style}"
+                            Click="btn_Bookmarks_Click">
+
+                        <Button.Flyout>
+                            <Flyout x:Name="btn_BookmarkFlyout">
+                                <StackPanel Orientation="Vertical" Width="300">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="Add Bookmark"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+
+                                        <SymbolIcon Symbol="OutlineStar" Grid.Column="1"/>
+
+                                    </Grid>
+
+                                    <TextBlock Text="Title"/>
+                                    <TextBox x:Name="textbox_bm_title" PlaceholderText="Document Title" Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Url"/>
+                                    <TextBox x:Name="textbox_bm_url" PlaceholderText="Web Page Url" Margin="0,0,0,30"/>
+
+                                    <Grid>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button x:Name="btn_AddBookmark"
+                                                Content="Add" 
+                                                HorizontalAlignment="Left"
+                                                Style="{StaticResource BookmarksFlyoutButtons_Style}"
+                                                Click="btn_AddBookmark_Click"/>
+
+                                        <Button x:Name="btn_CancelBookmark"
+                                                Grid.Column="1"
+                                                Content="Cancel"
+                                                HorizontalAlignment="Right"
+                                                Style="{StaticResource BookmarksFlyoutButtons_Style}"
+                                                Click="btn_CancelBookmark_Click"/>
+
+                                    </Grid>
+
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                        
+                        <Viewbox Style="{StaticResource Viewbox_Style}">
+                            <SymbolIcon Symbol="Bookmarks"/>
+                        </Viewbox>
+
+                    </Button>
+                    
+                </StackPanel>
+
+                <!--Menu Button-->
+                <Button x:Name="btn_Menu"
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource Buttons_Style2}">
+
+                    <Button.Flyout>
+
+                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
+
+                            <MenuFlyoutItem x:Name="mfl_NewTabMenuItem"
+                                        Text="New Tab"
+                                        Click="mfl_NewTabMenuItem_Click"/>
+                            <MenuFlyoutItem x:Name="mfl_NewPrivateTabItem"
+                                            Text="New Private Tab"
+                                            Click="mfl_NewPrivateTabItem_Click"/>
+                            <MenuFlyoutItem x:Name="mfl_NewWindowItem"
+                                            Text="New Window"
+                                            Click="mfl_NewWindowItem_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem x:Name="mfl_HistoryMenuItem"
+                                        Text="History"
+                                        Click="mfl_HistoryMenuItem_Click">
+
+                                <MenuFlyoutItem.ContextFlyout>
+
+                                    <Flyout x:Name="HistoryFlyoutMenu" Placement="TopEdgeAlignedRight">
+
+                                        <Grid Style="{StaticResource BaseGridFlyout_Style}">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="35"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock x:Name="HistorySmallTitle"
+                                                       Text="History"
+                                                       Style="{StaticResource TextBlockFlyout_Style}"/>
+
+                                            <!--TextBox for finding-->
+                                            <TextBox x:Name="HistorySearchMenuItem"
+                                                     Style="{StaticResource TextBoxFindingFlyout_Style}"
+                                                     TextChanged="HistorySearchMenuItem_TextChanged"/>
+
+                                            <!--Buttons-->
+                                            <StackPanel Style="{StaticResource StackPanelButtonsFlyout_Style}">
+
+                                                <Button x:Name="SearchHistoryMenuFlyout"
+                                                    Style="{StaticResource SearchButtonFlyout_Style}"
+                                                    Click="SearchHistoryMenuFlyout_Click">
+
+                                                    <Viewbox Style="{StaticResource ViewboxHistoryBookmarksFlyoutButtons_Style}">
+                                                        <SymbolIcon Symbol="Find"/>
+                                                    </Viewbox>
+
+                                                </Button>
+
+                                                <Button x:Name="ClearHistoryDataFlyout"
+                                                        Style="{StaticResource ButtonsHistoryBookmarksFlyout_Style}"
+                                                        Click="ClearHistoryDataFlyout_Click">
+
+                                                    <Viewbox Style="{StaticResource ViewboxHistoryBookmarksFlyoutButtons_Style}">
+                                                        <SymbolIcon Symbol="Delete"/>
+                                                    </Viewbox>
+
+                                                </Button>
+
+                                            </StackPanel>
+
+                                            <!--History-->
+                                            <ListView x:Name="SmallHistoryMenu"
+                                                      SelectionChanged="SmallHistoryMenu_SelectionChanged"
+                                                      Style="{StaticResource ListViewFlyout_Style}">
+                                            </ListView>
+
+                                        </Grid>
+                                    </Flyout>
+                                </MenuFlyoutItem.ContextFlyout>
+                            </MenuFlyoutItem>
+
+                            <MenuFlyoutItem x:Name="mfl_BookMarksMenuItem"
+                                            Text="Bookmarks"
+                                            Click="mfl_BookMarksMenuItem_Click">
+
+                                <MenuFlyoutItem.ContextFlyout>
+
+                                    <Flyout x:Name="BookmarksFlyoutMenu" Placement="TopEdgeAlignedRight">
+
+                                        <Grid Style="{StaticResource BaseGridFlyout_Style}">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="35"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock x:Name="BookmarksSmallTitle"
+                                                   Text="Bookmarks"
+                                                   Style="{StaticResource TextBlockFlyout_Style}"/>
+
+                                            <!--TextBox for finding-->
+                                            <TextBox x:Name="BookmarksSearchMenuItem"
+                                                     Style="{StaticResource TextBoxFindingFlyout_Style}"
+                                                     TextChanged="BookmarksSearchMenuItem_TextChanged"/>
+
+                                            <!--Buttons-->
+                                            <StackPanel Style="{StaticResource StackPanelButtonsFlyout_Style}">
+
+                                                <Button x:Name="SearchBookmarksMenuFlyout"
+                                                    Style="{StaticResource SearchButtonFlyout_Style}"
+                                                    Click="SearchBookmarksMenuFlyout_Click">
+
+                                                    <Viewbox Style="{StaticResource ViewboxHistoryBookmarksFlyoutButtons_Style}">
+                                                        <SymbolIcon Symbol="Find"/>
+                                                    </Viewbox>
+
+                                                </Button>
+
+                                                <Button x:Name="ClearBookmarksDataFlyout"
+                                                        Style="{StaticResource ButtonsHistoryBookmarksFlyout_Style}"
+                                                        Click="ClearBookmarksDataFlyout_Click">
+
+                                                    <Viewbox Style="{StaticResource ViewboxHistoryBookmarksFlyoutButtons_Style}">
+                                                        <SymbolIcon Symbol="Delete"/>
+                                                    </Viewbox>
+
+                                                </Button>
+
+                                            </StackPanel>
+
+                                            <!--History-->
+                                            <ListView x:Name="SmallBookmarksMenu"
+                                                      SelectionChanged="SmallBookmarksMenu_SelectionChanged"
+                                                      Style="{StaticResource ListViewFlyout_Style}">
+                                            </ListView>
+
+                                        </Grid>
+                                    </Flyout>
+                                </MenuFlyoutItem.ContextFlyout>
+
+
+                            </MenuFlyoutItem>
+                            
+                            <MenuFlyoutItem x:Name="mfl_DownloadMenuItem"
+                                        Text="Downloads" 
+                                        Click="mfl_DownloadMenuItem_Click"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem x:Name="mfl_DevtoolsMenuItem"
+                                        Text="Developer Tools" 
+                                        Click="mfl_DevtoolsMenuItem_Click"/>
+                        </MenuFlyout>
+
+                    </Button.Flyout>
+
+                    <Viewbox Style="{StaticResource Viewbox_Style}">
+                        <SymbolIcon Symbol="More"/>
+                    </Viewbox>
+
+                </Button>
+
+            </Grid>
+            
+        </Grid>
+        
+        <!--Progress bar-->
+        <controls:ProgressBar x:Name="BrowserProgressBar"
+                              Grid.Row="1" 
+                              VerticalAlignment="Top" 
+                              Height="2"
+                              IsIndeterminate="True"/>
+
+        <!--Web View 2-->
+        <controls:WebView2 x:Name="wv_Browser"
+                           HorizontalAlignment="Stretch"
+                           HorizontalContentAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Stretch"
+                           Source="https://www.google.com"
+                           Grid.Row="1"
+                           Margin="0 2 0 0"
+                           NavigationCompleted="wv_Browser_NavigationCompleted"
+                           NavigationStarting="wv_Browser_NavigationStarting"
+                           CoreWebView2Initialized="wv_Browser_CoreWebView2Initialized"/>
+        
+    </Grid>
+    
+</UserControl>
